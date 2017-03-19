@@ -20,7 +20,6 @@ public class Modelo {
     private Entidad objeto;
     private int cantidad = 0;
     private Linea objetoLinea;
-    private BufferStrategy bufferStrategy;
 
     public Vista getVentana() {
         if (ventana == null) {
@@ -42,11 +41,9 @@ public class Modelo {
     }
 
     public void validaPosicionLienzo(int posicionX, int posicionY) {
-        System.out.println("x:" + posicionX + "--y:" + posicionY);
         if (objeto == null) {
             getVentana().getLabelLog().setText("Error,debe seleccionar un componente");
             getVentana().getLabelLog().setForeground(new java.awt.Color(253, 253, 0));
-
         } else {
 
             if ("linea".equalsIgnoreCase(objeto.getTipo())) {
@@ -58,8 +55,7 @@ public class Modelo {
                 if (cantidad == 1) {
                     objetoLinea.setPunto2X(posicionX);
                     objetoLinea.setPunto2Y(posicionY);
-                    dibujar();
-                    objetoLinea.dibujar(getVentana().getLienzo().getBufferStrategy());
+                    objetoLinea.dibujar(getVentana().getLienzo().getGraphics());
 
                 }
                 cantidad++;
@@ -72,12 +68,4 @@ public class Modelo {
 
     }
 
-    public void dibujar() {
-         bufferStrategy = getVentana().getLienzo().getBufferStrategy();
-        if (bufferStrategy == null) {
-            getVentana().getLienzo().createBufferStrategy(3);
-            getVentana().getLienzo().requestFocus();
-            return;
-        }
-    }
 }

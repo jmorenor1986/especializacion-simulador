@@ -6,7 +6,6 @@
 package logica.entidad;
 
 import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
 
 /**
  *
@@ -14,7 +13,7 @@ import java.awt.image.BufferStrategy;
  */
 public interface Acciones {
     
-    public void dibujar(BufferStrategy bf);
+    public void dibujar(Graphics g);
     public void eliminar();
     public void validarEstado();
 }

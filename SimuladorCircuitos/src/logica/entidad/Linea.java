@@ -23,14 +23,13 @@ public class Linea extends Entidad{
     }
 
     @Override
-    public void dibujar(BufferStrategy bf) {
-        super.dibujar(bf); 
-        Graphics lapiz = bf.getDrawGraphics();
-        lapiz.setColor(Color.WHITE);
-        lapiz.drawLine(punto1X, punto1Y, punto2X, punto2Y);
-        
-        
+    public void dibujar(Graphics g) {
+        super.dibujar(g); 
+        g.setColor(Color.WHITE);
+        g.drawLine(punto1X, punto1Y, punto2X, punto2Y);
     }
+
+   
 
     
     public int getPunto1X() {

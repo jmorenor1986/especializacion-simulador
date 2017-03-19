@@ -6,7 +6,6 @@
 package logica.entidad;
 
 import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
 
 /**
  *
@@ -19,15 +18,13 @@ public class Entidad implements Acciones {
     private String tipo;
     private String mensaje;
 
-    public Entidad(String mensaje,String tipo) {
+    public Entidad(String mensaje, String tipo) {
         this.mensaje = mensaje;
         this.tipo = tipo;
     }
-    
-    
 
     @Override
-    public void dibujar(BufferStrategy bf) {
+    public void dibujar(Graphics g) {
     }
 
     @Override
@@ -69,8 +66,5 @@ public class Entidad implements Acciones {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-    
-    
-    
 
 }
