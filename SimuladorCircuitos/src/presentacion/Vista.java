@@ -2,21 +2,30 @@ package presentacion;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Graphics;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 
 public class Vista extends javax.swing.JFrame {
 
     private Controlador control;
     private javax.swing.JLabel lblCeldas[][];
     private final Modelo modelo;
+    private JMenuItem nuevoLienzo;
 
     public Vista(Modelo aThis) {
         modelo = aThis;
         initComponents();
         creaMenuLateral();
         asignarEventosMenuLateral();
+        iniciarComponentesPersonalizados();
         asignarEventosCanvas();
+
+    }
+
+    private void iniciarComponentesPersonalizados() {
+        nuevoLienzo = new JMenuItem("Nuevo");
+        nuevoLienzo.addActionListener(getControl());
+        jMenu1.add(nuevoLienzo);
 
     }
 
@@ -51,7 +60,7 @@ public class Vista extends javax.swing.JFrame {
             .addGroup(panel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(labelLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelLog, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -61,10 +70,10 @@ public class Vista extends javax.swing.JFrame {
                 .addComponent(labelLog, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("File");
+        jMenu1.setText("Archivo");
         menu.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Ayuda");
         menu.add(jMenu2);
 
         setJMenuBar(menu);
@@ -73,10 +82,10 @@ public class Vista extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(141, Short.MAX_VALUE)
-                .addComponent(lienzo, javax.swing.GroupLayout.PREFERRED_SIZE, 859, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lienzo, javax.swing.GroupLayout.PREFERRED_SIZE, 884, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,7 +116,7 @@ public class Vista extends javax.swing.JFrame {
         int lado = 48;
         lblCeldas = new JLabel[5][2];
         int contador = 1;
-        for (int fil = 0; fil < 1; fil++) {
+        for (int fil = 0; fil < 4; fil++) {
             for (int col = 0; col < 2; col++) {
                 lblCeldas[fil][col] = new JLabel();
                 lblCeldas[fil][col].setName("objeto" + contador);
@@ -124,7 +133,7 @@ public class Vista extends javax.swing.JFrame {
     }
 
     private void asignarEventosMenuLateral() {
-        for (int fil = 0; fil < 1; fil++) {
+        for (int fil = 0; fil < 4; fil++) {
             for (int col = 0; col < 2; col++) {
                 lblCeldas[fil][col].addMouseListener(getControl());
             }
@@ -133,9 +142,8 @@ public class Vista extends javax.swing.JFrame {
 
     private void asignarEventosCanvas() {
         lienzo.addMouseListener(getControl());
+        nuevoLienzo.addMouseListener(getControl());
     }
-
-    
 
     public Controlador getControl() {
         if (control == null) {

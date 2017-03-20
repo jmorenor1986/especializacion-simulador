@@ -14,9 +14,21 @@ public class FactoriaObjetos {
     public static Entidad getEntidad(String tipo) {
         switch (tipo) {
             case "objeto1":
-                return new Linea("La linea sirve para unir dos componentes","linea");
+                return new Linea("La linea sirve para unir dos componentes", "linea");
             case "objeto2":
                 return new Compuerta("Componente AND, tiene dos entradas y una salida", "and");
+            case "objeto3":
+                return new Compuerta("Componente OR, tiene dos entradas y una salida", "or");
+            case "objeto4":
+                return new Compuerta("Componente NOT, tiene una entrada y una salida", "not");
+            case "objeto5":
+                return new Compuerta("Componente ON, Envia un 1 de corriente", "on");
+            case "objeto6":
+                return new Compuerta("Componente OFF, Envia un 0 de corriente", "off");
+            case "objeto7":
+                return new Compuerta("Componente Salida, Muestra cual es la salida del circuito", "lampOFF");
+            case "objeto8":
+                return new Compuerta("Componente XOR, tiene dos entradas y una salida", "xor");
             default:
                 return null;
         }

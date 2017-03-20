@@ -5,15 +5,18 @@
  */
 package presentacion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 
 /**
  *
  * @author john
  */
-public class Controlador implements MouseListener {
+public class Controlador implements MouseListener, ActionListener {
 
     private final Vista ventana;
 
@@ -48,6 +51,17 @@ public class Controlador implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       if("javax.swing.JMenuItem".equalsIgnoreCase(e.getSource().getClass().getName())){
+           JMenuItem item = (JMenuItem) e.getSource();
+           if("nuevo".equalsIgnoreCase(item.getText())){
+               ventana.getModelo().iniciaLienzo();
+           }
+       }
+
     }
 
 }

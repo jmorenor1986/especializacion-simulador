@@ -6,10 +6,6 @@
 package logica.entidad;
 
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-import sun.awt.image.AbstractMultiResolutionImage;
-import sun.awt.image.ToolkitImage;
 
 /**
  *

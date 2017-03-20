@@ -80,5 +80,9 @@ public class Modelo {
         compuerta.setPosicionY(posicionY);
         compuerta.dibujar(getVentana().getLienzo().getGraphics());
     }
+    
+    public void iniciaLienzo(){
+        getVentana().getLienzo().repaint();
+    }
 
 }
