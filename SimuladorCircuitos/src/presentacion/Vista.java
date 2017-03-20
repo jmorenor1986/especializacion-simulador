@@ -100,19 +100,19 @@ public class Vista extends javax.swing.JFrame {
     private java.awt.Panel panel1;
     // End of variables declaration//GEN-END:variables
 
-    public void creaMenuLateral() {
+    private void creaMenuLateral() {
         int posX = 53;
         int posY = 52;
         int separacion = 5;
         int lado = 48;
         lblCeldas = new JLabel[5][2];
         int contador = 1;
-        for (int fil = 0; fil < 5; fil++) {
+        for (int fil = 0; fil < 1; fil++) {
             for (int col = 0; col < 2; col++) {
                 lblCeldas[fil][col] = new JLabel();
                 lblCeldas[fil][col].setName("objeto" + contador);
                 lblCeldas[fil][col].setBackground(Color.WHITE);
-                lblCeldas[fil][col].setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/objeto" + 1 + ".jpg")));
+                lblCeldas[fil][col].setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menu/objeto" + contador + ".jpg")));
                 lblCeldas[fil][col].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
                 getContentPane().add(lblCeldas[fil][col]);
                 posX = 0 + col * (lado + separacion);
@@ -123,15 +123,15 @@ public class Vista extends javax.swing.JFrame {
         }
     }
 
-    public void asignarEventosMenuLateral() {
-        for (int fil = 0; fil < 5; fil++) {
+    private void asignarEventosMenuLateral() {
+        for (int fil = 0; fil < 1; fil++) {
             for (int col = 0; col < 2; col++) {
                 lblCeldas[fil][col].addMouseListener(getControl());
             }
         }
     }
 
-    public void asignarEventosCanvas() {
+    private void asignarEventosCanvas() {
         lienzo.addMouseListener(getControl());
     }
 

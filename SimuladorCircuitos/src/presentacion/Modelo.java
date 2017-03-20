@@ -5,7 +5,7 @@
  */
 package presentacion;
 
-import java.awt.image.BufferStrategy;
+import logica.entidad.Compuerta;
 import logica.entidad.Entidad;
 import logica.entidad.FactoriaObjetos;
 import logica.entidad.Linea;
@@ -20,6 +20,7 @@ public class Modelo {
     private Entidad objeto;
     private int cantidad = 0;
     private Linea objetoLinea;
+    private Compuerta compuerta;
 
     public Vista getVentana() {
         if (ventana == null) {
@@ -47,25 +48,37 @@ public class Modelo {
         } else {
 
             if ("linea".equalsIgnoreCase(objeto.getTipo())) {
-                if (cantidad == 0) {
-                    objetoLinea = (Linea) objeto;
-                    objetoLinea.setPunto1X(posicionX);
-                    objetoLinea.setPunto1Y(posicionY);
-                }
-                if (cantidad == 1) {
-                    objetoLinea.setPunto2X(posicionX);
-                    objetoLinea.setPunto2Y(posicionY);
-                    objetoLinea.dibujar(getVentana().getLienzo().getGraphics());
-
-                }
-                cantidad++;
-
+                dibujaLinea(posicionX, posicionY);
             } else {
-
+                dibujaCompuerta(posicionX, posicionY);
             }
 
         }
 
+    }
+
+    public void dibujaLinea(int posicionX, int posicionY) {
+        if (cantidad == 0) {
+            objetoLinea = (Linea) objeto;
+            objetoLinea.setPunto1X(posicionX);
+            objetoLinea.setPunto1Y(posicionY);
+
+        }
+        if (cantidad == 1) {
+            objetoLinea.setPunto2X(posicionX);
+            objetoLinea.setPunto2Y(posicionY);
+            objetoLinea.dibujar(getVentana().getLienzo().getGraphics());
+            cantidad = -1;
+
+        }
+        cantidad++;
+    }
+    
+    public void dibujaCompuerta(int posicionX, int posicionY){
+        compuerta = (Compuerta) objeto;
+        compuerta.setPosicionX(posicionX);
+        compuerta.setPosicionY(posicionY);
+        compuerta.dibujar(getVentana().getLienzo().getGraphics());
     }
 
 }

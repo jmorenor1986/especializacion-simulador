@@ -23,7 +23,6 @@ public class Controlador implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("clase::" + e.getSource().getClass());
         if ("class java.awt.Canvas".equalsIgnoreCase(e.getSource().getClass().toString())) {
             ventana.getModelo().validaPosicionLienzo(e.getX(), e.getY());
 

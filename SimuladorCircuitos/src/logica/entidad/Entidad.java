@@ -17,6 +17,8 @@ public class Entidad implements Acciones {
     private String nombre;
     private String tipo;
     private String mensaje;
+    private int posicionX;
+    private int posicionY;
 
     public Entidad(String mensaje, String tipo) {
         this.mensaje = mensaje;
@@ -25,6 +27,8 @@ public class Entidad implements Acciones {
 
     @Override
     public void dibujar(Graphics g) {
+        
+
     }
 
     @Override
@@ -66,5 +70,23 @@ public class Entidad implements Acciones {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+    public int getPosicionX() {
+        return posicionX;
+    }
+
+    public void setPosicionX(int posicionX) {
+        this.posicionX = posicionX;
+    }
+
+    public int getPosicionY() {
+        return posicionY;
+    }
+
+    public void setPosicionY(int posicionY) {
+        this.posicionY = posicionY;
+    }
+    
+    
 
 }

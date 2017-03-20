@@ -15,6 +15,8 @@ public class FactoriaObjetos {
         switch (tipo) {
             case "objeto1":
                 return new Linea("La linea sirve para unir dos componentes","linea");
+            case "objeto2":
+                return new Compuerta("Componente AND, tiene dos entradas y una salida", "and");
             default:
                 return null;
         }
