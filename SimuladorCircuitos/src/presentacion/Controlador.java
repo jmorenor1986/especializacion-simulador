@@ -55,12 +55,15 @@ public class Controlador implements MouseListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       if("javax.swing.JMenuItem".equalsIgnoreCase(e.getSource().getClass().getName())){
-           JMenuItem item = (JMenuItem) e.getSource();
-           if("nuevo".equalsIgnoreCase(item.getText())){
-               ventana.getModelo().iniciaLienzo();
-           }
-       }
+        if ("javax.swing.JMenuItem".equalsIgnoreCase(e.getSource().getClass().getName())) {
+            JMenuItem item = (JMenuItem) e.getSource();
+            if ("nuevo".equalsIgnoreCase(item.getText())) {
+                ventana.getModelo().iniciaLienzo();
+            }
+            if ("deshacer".equalsIgnoreCase(item.getText())) {
+                ventana.getModelo().deshacer();
+            }
+        }
 
     }
 

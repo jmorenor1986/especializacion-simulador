@@ -11,7 +11,7 @@ import java.awt.Graphics;
  *
  * @author john
  */
-public class Entidad implements Acciones {
+public class Entidad  {
 
     private String estado;
     private String nombre;
@@ -25,19 +25,7 @@ public class Entidad implements Acciones {
         this.tipo = tipo;
     }
 
-    @Override
-    public void dibujar(Graphics g) {
-        
 
-    }
-
-    @Override
-    public void eliminar() {
-    }
-
-    @Override
-    public void validarEstado() {
-    }
 
     public String getEstado() {
         return estado;

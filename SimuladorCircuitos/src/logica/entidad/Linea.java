@@ -12,7 +12,7 @@ import java.awt.Graphics;
  *
  * @author john
  */
-public class Linea extends Entidad{
+public class Linea extends Entidad implements Acciones{
 
     
     private int punto1X, punto1Y,punto2X,punto2Y;
@@ -23,7 +23,6 @@ public class Linea extends Entidad{
 
     @Override
     public void dibujar(Graphics g) {
-        super.dibujar(g); 
         g.setColor(Color.WHITE);
         g.drawLine(punto1X, punto1Y, punto2X, punto2Y);
     }
@@ -61,6 +60,16 @@ public class Linea extends Entidad{
 
     public void setPunto2Y(int punto2Y) {
         this.punto2Y = punto2Y;
+    }
+
+    @Override
+    public void eliminar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void validarEstado() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

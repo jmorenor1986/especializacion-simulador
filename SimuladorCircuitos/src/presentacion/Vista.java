@@ -11,6 +11,7 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JLabel lblCeldas[][];
     private final Modelo modelo;
     private JMenuItem nuevoLienzo;
+    private JMenuItem deshacer;
 
     public Vista(Modelo aThis) {
         modelo = aThis;
@@ -24,8 +25,11 @@ public class Vista extends javax.swing.JFrame {
 
     private void iniciarComponentesPersonalizados() {
         nuevoLienzo = new JMenuItem("Nuevo");
+        deshacer = new JMenuItem("Deshacer");
         nuevoLienzo.addActionListener(getControl());
+        deshacer.addActionListener(getControl());
         jMenu1.add(nuevoLienzo);
+        jMenu1.add(deshacer);
 
     }
 
