@@ -5,8 +5,6 @@
  */
 package logica.entidad;
 
-import java.awt.Graphics;
-
 /**
  *
  * @author john
@@ -19,6 +17,8 @@ public class Entidad  {
     private String mensaje;
     private int posicionX;
     private int posicionY;
+
+    
 
     public Entidad(String mensaje, String tipo) {
         this.mensaje = mensaje;

@@ -13,7 +13,9 @@ import java.awt.Graphics;
  */
 public class Compuerta extends Entidad implements Acciones {
 
-
+    private int entrada1;
+    private int entrada2;
+    private int salida;
 
     public Compuerta(String mensaje, String tipo) {
         super(mensaje, tipo);

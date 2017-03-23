@@ -8,9 +8,9 @@ package presentacion;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import logica.entidad.Compuerta;
 import logica.entidad.Entidad;
-import logica.entidad.FactoriaObjetos;
+import logica.entidad.FachadaCompuertas;
+import logica.entidad.FactoriaCompuertas;
 import logica.entidad.Linea;
 
 /**
@@ -23,7 +23,6 @@ public class Modelo implements Runnable {
     private Entidad objeto;
     private int cantidad = 0;
     private Linea objetoLinea;
-    private Compuerta compuerta;
     private Thread hiloDibujo;
     private boolean pintaLienzo;
     private ArrayList<Entidad> guardaObjetos;
@@ -51,7 +50,7 @@ public class Modelo implements Runnable {
     }
 
     public void validaObjetoSeleccionado(String nombre) {
-        objeto = FactoriaObjetos.getEntidad(nombre);
+        objeto = FactoriaCompuertas.getEntidad(nombre);
         nombreObjeto = nombre;
         getVentana().getLabelLog().setText(objeto.getMensaje());
         getVentana().getLabelLog().setForeground(new java.awt.Color(253, 253, 0));
@@ -63,20 +62,18 @@ public class Modelo implements Runnable {
             getVentana().getLabelLog().setText("Error,debe seleccionar un componente");
             getVentana().getLabelLog().setForeground(new java.awt.Color(253, 253, 0));
         } else {
-
-            if ("linea".equalsIgnoreCase(objeto.getTipo())) {
-                dibujaLinea(posicionX, posicionY);
-            } else {
-                dibujaCompuerta(posicionX, posicionY);
-            }
-
+            FachadaCompuertas fachada = new FachadaCompuertas();
+            objeto.setPosicionX(posicionX);
+            objeto.setPosicionY(posicionY);
+            fachada.dibujar(objeto, getVentana().getLienzo().getGraphics());
+            guardaObjetos.add(fachada.getObjetosRepintar());
         }
 
     }
 
     public void dibujaLinea(int posicionX, int posicionY) {
         if (cantidad == 0) {
-            objetoLinea = (Linea) FactoriaObjetos.getEntidad(nombreObjeto);
+            objetoLinea = (Linea) FactoriaCompuertas.getEntidad(nombreObjeto);
             objetoLinea.setPunto1X(posicionX);
             objetoLinea.setPunto1Y(posicionY);
 
@@ -92,28 +89,17 @@ public class Modelo implements Runnable {
         cantidad++;
     }
 
-    public void dibujaCompuerta(int posicionX, int posicionY) {
-        compuerta = (Compuerta) FactoriaObjetos.getEntidad(nombreObjeto);
-        compuerta.setPosicionX(posicionX);
-        compuerta.setPosicionY(posicionY);
-        compuerta.dibujar(getVentana().getLienzo().getGraphics());
-        guardaObjetos.add(compuerta);
-    }
-
     public void iniciaLienzo() {
         getVentana().getLienzo().repaint();
     }
 
     public void repintarLienzo() {
         iniciaLienzo();
+        System.out.println("presentacion.Modelo.repintarLienzo()"+guardaObjetos.size());
         for (Entidad obj : guardaObjetos) {
-            if (obj instanceof Compuerta) {
-                Compuerta com = (Compuerta) obj;
-                com.dibujar(getVentana().getLienzo().getGraphics());
-            } else if (obj instanceof Linea) {
-                Linea linea = (Linea) obj;
-                linea.dibujar(getVentana().getLienzo().getGraphics());
-            }
+            FachadaCompuertas fachada = new FachadaCompuertas();
+            fachada.dibujar(obj, getVentana().getLienzo().getGraphics());
+            System.out.println("posicion"+obj.getPosicionX()+"*****"+obj.getPosicionY());
         }
 
     }

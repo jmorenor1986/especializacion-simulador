@@ -9,7 +9,7 @@ package logica.entidad;
  *
  * @author john
  */
-public class FactoriaObjetos {
+public class FactoriaCompuertas {
 
     public static Entidad getEntidad(String tipo) {
         switch (tipo) {
@@ -22,9 +22,9 @@ public class FactoriaObjetos {
             case "objeto4":
                 return new Compuerta("Componente NOT, tiene una entrada y una salida", "not");
             case "objeto5":
-                return new Compuerta("Componente ON, Envia un 1 de corriente", "on");
+                return new Switch("Componente ON, Envia un 1 de corriente", "on");
             case "objeto6":
-                return new Compuerta("Componente OFF, Envia un 0 de corriente", "off");
+                return new Switch("Componente OFF, Envia un 0 de corriente", "off");
             case "objeto7":
                 return new Compuerta("Componente Salida, Muestra cual es la salida del circuito", "lampOFF");
             case "objeto8":

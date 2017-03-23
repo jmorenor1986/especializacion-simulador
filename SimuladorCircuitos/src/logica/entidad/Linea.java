@@ -16,6 +16,7 @@ public class Linea extends Entidad implements Acciones{
 
     
     private int punto1X, punto1Y,punto2X,punto2Y;
+    
 
     public Linea(String mensaje,String tipo) {
         super(mensaje,tipo);
