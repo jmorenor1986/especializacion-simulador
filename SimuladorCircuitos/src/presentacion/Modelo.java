@@ -5,6 +5,7 @@
  */
 package presentacion;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +13,7 @@ import logica.entidad.Entidad;
 import logica.entidad.FachadaCompuertas;
 import logica.entidad.FactoriaCompuertas;
 import logica.entidad.Linea;
+import logica.entidad.MensajeLog;
 
 /**
  *
@@ -27,6 +29,9 @@ public class Modelo implements Runnable {
     private boolean pintaLienzo;
     private ArrayList<Entidad> guardaObjetos;
     private String nombreObjeto;
+    private FachadaCompuertas fachada;
+    private MensajeLog mensaje;
+    private int consecutivoNombre = 0;
 
     public Modelo() {
         hiloDibujo = new Thread(this);
@@ -47,26 +52,46 @@ public class Modelo implements Runnable {
         if (guardaObjetos == null) {
             guardaObjetos = new ArrayList<>();
         }
+        if (fachada == null) {
+            fachada = new FachadaCompuertas();
+        }
+        if (mensaje == null) {
+            mensaje = new MensajeLog();
+        }
     }
 
     public void validaObjetoSeleccionado(String nombre) {
         objeto = FactoriaCompuertas.getEntidad(nombre);
         nombreObjeto = nombre;
+        mensaje.setTipo("texto");
         getVentana().getLabelLog().setText(objeto.getMensaje());
-        getVentana().getLabelLog().setForeground(new java.awt.Color(253, 253, 0));
+        getVentana().getLabelLog().setForeground(mensaje.getColor());
 
     }
 
-    public void validaPosicionLienzo(int posicionX, int posicionY) {
+    public void dibujaComponente(int posicionX, int posicionY) {
         if (objeto == null) {
-            getVentana().getLabelLog().setText("Error,debe seleccionar un componente");
-            getVentana().getLabelLog().setForeground(new java.awt.Color(253, 253, 0));
+            mensaje.setTipo("error");
+            mensaje.setMensaje("Error,debe seleccionar un componente");
+            getVentana().getLabelLog().setText(mensaje.getMensaje());
+            getVentana().getLabelLog().setForeground(mensaje.getColor());
         } else {
-            FachadaCompuertas fachada = new FachadaCompuertas();
-            objeto.setPosicionX(posicionX);
-            objeto.setPosicionY(posicionY);
-            fachada.dibujar(objeto, getVentana().getLienzo().getGraphics());
-            guardaObjetos.add(fachada.getObjetosRepintar());
+            if (validaComponente(posicionX, posicionY)) {
+                if (!"linea".equalsIgnoreCase(objeto.getTipo())) {
+                    objeto.setPosicionX(posicionX);
+                    objeto.setPosicionY(posicionY);
+                    fachada.dibujar(objeto, getVentana().getLienzo().getGraphics());
+                    fachada.getObjetosRepintar().setNombre("objeto" + consecutivoNombre);
+                    consecutivoNombre++;
+                    guardaObjetos.add(fachada.getObjetosRepintar());
+                    getVentana().getLabelLog().setText(fachada.getObjetosRepintar().getMensajeLog().getMensaje());
+                    getVentana().getLabelLog().setForeground(fachada.getObjetosRepintar().getMensajeLog().getColor());
+                    objeto = FactoriaCompuertas.getEntidad(nombreObjeto);
+                } else {
+                    dibujaLinea(posicionX, posicionY);
+                }
+            }
+
         }
 
     }
@@ -81,12 +106,26 @@ public class Modelo implements Runnable {
         if (cantidad == 1) {
             objetoLinea.setPunto2X(posicionX);
             objetoLinea.setPunto2Y(posicionY);
-            objetoLinea.dibujar(getVentana().getLienzo().getGraphics());
+            fachada.dibujar(objetoLinea, getVentana().getLienzo().getGraphics());
+            fachada.getObjetosRepintar().setNombre("objeto" + consecutivoNombre);
+            consecutivoNombre++;
             cantidad = -1;
-            guardaObjetos.add(objetoLinea);
+            guardaObjetos.add(fachada.getObjetosRepintar());
 
         }
         cantidad++;
+    }
+
+    public boolean validaComponente(int posicionX, int posicionY) {
+        for (Entidad ent : guardaObjetos) {
+            if (!fachada.validarPosicionComponente(ent, posicionX, posicionY)) {
+                //false que no se puede pintar
+                getVentana().getLabelLog().setText("Error, no se puede dibujar un componente sobre otro");
+                getVentana().getLabelLog().setForeground(Color.RED);
+                return false;
+            }
+        }
+        return true;
     }
 
     public void iniciaLienzo() {
@@ -95,11 +134,9 @@ public class Modelo implements Runnable {
 
     public void repintarLienzo() {
         iniciaLienzo();
-        System.out.println("presentacion.Modelo.repintarLienzo()"+guardaObjetos.size());
         for (Entidad obj : guardaObjetos) {
-            FachadaCompuertas fachada = new FachadaCompuertas();
             fachada.dibujar(obj, getVentana().getLienzo().getGraphics());
-            System.out.println("posicion"+obj.getPosicionX()+"*****"+obj.getPosicionY());
+            System.out.println("posicion" + obj.getPosicionX() + "*****" + obj.getPosicionY());
         }
 
     }
@@ -115,7 +152,7 @@ public class Modelo implements Runnable {
         while (pintaLienzo) {
             try {
                 repintarLienzo();
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Modelo.class.getName()).log(Level.SEVERE, null, ex);
             }

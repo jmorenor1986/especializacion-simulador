@@ -12,25 +12,26 @@ import java.awt.Graphics;
  *
  * @author john
  */
-public class Linea extends Entidad implements Acciones{
+public class Linea extends Entidad implements Acciones {
 
-    
-    private int punto1X, punto1Y,punto2X,punto2Y;
-    
+    private int punto1X, punto1Y, punto2X, punto2Y;
 
-    public Linea(String mensaje,String tipo) {
-        super(mensaje,tipo);
+    public Linea(String mensaje, String tipo) {
+        super(mensaje, tipo);
     }
 
     @Override
     public void dibujar(Graphics g) {
-        g.setColor(Color.WHITE);
+        if ("on".equalsIgnoreCase(getEstado())) {
+            g.setColor(Color.YELLOW);
+        } else if ("off".equalsIgnoreCase(getEstado())) {
+            g.setColor(Color.GRAY);
+        } else {
+            g.setColor(Color.BLUE);
+        }
         g.drawLine(punto1X, punto1Y, punto2X, punto2Y);
     }
 
-   
-
-    
     public int getPunto1X() {
         return punto1X;
     }
@@ -72,15 +73,5 @@ public class Linea extends Entidad implements Acciones{
     public void validarEstado() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
-
-    
-    
-
- 
-    
-    
-  
 
 }

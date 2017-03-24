@@ -26,7 +26,7 @@ public class FactoriaCompuertas {
             case "objeto6":
                 return new Switch("Componente OFF, Envia un 0 de corriente", "off");
             case "objeto7":
-                return new Compuerta("Componente Salida, Muestra cual es la salida del circuito", "lampOFF");
+                return new Salida("Componente Salida, Muestra cual es la salida del circuito", "lampOFF");
             case "objeto8":
                 return new Compuerta("Componente XOR, tiene dos entradas y una salida", "xor");
             default:

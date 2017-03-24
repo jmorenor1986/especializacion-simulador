@@ -13,9 +13,7 @@ import java.awt.Graphics;
  */
 public class Compuerta extends Entidad implements Acciones {
 
-    private int entrada1;
-    private int entrada2;
-    private int salida;
+
 
     public Compuerta(String mensaje, String tipo) {
         super(mensaje, tipo);
@@ -38,4 +36,5 @@ public class Compuerta extends Entidad implements Acciones {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    
 }

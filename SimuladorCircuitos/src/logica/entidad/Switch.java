@@ -13,8 +13,6 @@ import java.awt.Graphics;
  */
 public class Switch extends Entidad implements Acciones {
 
-    private int valorSalida;
-
     public Switch(String mensaje, String tipo) {
         super(mensaje, tipo);
     }
@@ -22,11 +20,15 @@ public class Switch extends Entidad implements Acciones {
     @Override
     public void dibujar(Graphics g) {
         if (getTipo().equalsIgnoreCase("ON")) {
-            valorSalida = 1;
+            getRelaciones().add(new Relaciones("salida", 1, ""));
+            getMensajeLog().setMensaje("Componente con salida 1");
         } else {
-            valorSalida = 0;
+            getRelaciones().add(new Relaciones("salida", 0, ""));
+            getMensajeLog().setMensaje("Componente con salida 0");
         }
+
         g.drawImage(new javax.swing.ImageIcon(getClass().getResource("/recursos/lienzo/" + getTipo() + ".png")).getImage(), getPosicionX(), getPosicionY(), null);
+        getMensajeLog().setTipo("texto");
     }
 
     @Override
@@ -36,15 +38,6 @@ public class Switch extends Entidad implements Acciones {
 
     @Override
     public void validarEstado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int getValorSalida() {
-        return valorSalida;
-    }
-
-    public void setValorSalida(int valorSalida) {
-        this.valorSalida = valorSalida;
     }
 
 }
