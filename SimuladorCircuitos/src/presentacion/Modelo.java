@@ -5,10 +5,14 @@
  */
 package presentacion;
 
+import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.Logica;
 import logica.entidad.Entidad;
 import logica.entidad.FachadaCompuertas;
 import logica.entidad.FactoriaCompuertas;
@@ -32,9 +36,14 @@ public class Modelo implements Runnable {
     private FachadaCompuertas fachada;
     private MensajeLog mensaje;
     private int consecutivoNombre = 0;
+    private BufferedImage dobleBuffer;
+    private Canvas lienzo;
+    private Logica logica;
 
     public Modelo() {
+
         hiloDibujo = new Thread(this);
+
     }
 
     public Vista getVentana() {
@@ -101,44 +110,76 @@ public class Modelo implements Runnable {
             objetoLinea = (Linea) FactoriaCompuertas.getEntidad(nombreObjeto);
             objetoLinea.setPunto1X(posicionX);
             objetoLinea.setPunto1Y(posicionY);
-
+            objetoLinea.setNombreObjeto1(FachadaCompuertas.nombreObjeto1);
         }
         if (cantidad == 1) {
             objetoLinea.setPunto2X(posicionX);
             objetoLinea.setPunto2Y(posicionY);
+            objetoLinea.setNombreObjeto2(FachadaCompuertas.nombreObjeto2);
             fachada.dibujar(objetoLinea, getVentana().getLienzo().getGraphics());
             fachada.getObjetosRepintar().setNombre("objeto" + consecutivoNombre);
             consecutivoNombre++;
             cantidad = -1;
+
             guardaObjetos.add(fachada.getObjetosRepintar());
 
         }
         cantidad++;
     }
 
+    //metodo que valida la posicion del componente
     public boolean validaComponente(int posicionX, int posicionY) {
-        for (Entidad ent : guardaObjetos) {
-            if (!fachada.validarPosicionComponente(ent, posicionX, posicionY)) {
-                //false que no se puede pintar
-                getVentana().getLabelLog().setText("Error, no se puede dibujar un componente sobre otro");
-                getVentana().getLabelLog().setForeground(Color.RED);
-                return false;
+        boolean validador;
+        validador = fachada.validarPosicionComponente(guardaObjetos, posicionX, posicionY, objeto.getTipo(), cantidad);
+        getVentana().getLabelLog().setText(FachadaCompuertas.text);
+        if (validador) {
+            getVentana().getLabelLog().setForeground(Color.blue);
+        } else {
+            getVentana().getLabelLog().setForeground(Color.red);
+            if (FachadaCompuertas.text.contains("OK")) {
+                getVentana().getLabelLog().setText("Punto invalido");
             }
         }
-        return true;
+        return validador;
     }
 
-    public void iniciaLienzo() {
-        getVentana().getLienzo().repaint();
+    public void validaFormaCircuito() {
+        getLogica().setListaEntidades(guardaObjetos);
+        getLogica().guardaComponentesSeparados();
+        if (getLogica().getListaSwitch().isEmpty()) {
+            mensaje.setMensaje("En el circuito no existe por lo menos un switch");
+            mensaje.setTipo("error");
+        } else if (getLogica().getListaSalida().isEmpty()) {
+            mensaje.setMensaje("En el circuito no existe por lo menos una salida");
+            mensaje.setTipo("error");
+        } else if (getLogica().getListaCompuertas().isEmpty()) {
+            mensaje.setMensaje("En el circuito no existe por lo menos una compuerta");
+            mensaje.setTipo("error");
+        } else if (getLogica().getListaLineas().isEmpty()) {
+            mensaje.setMensaje("En el circuito no existe por lo menos una conexión");
+            mensaje.setTipo("error");
+        }else{
+            getLogica().verificaEntradas();
+        }
+
+        getVentana().getLabelLog().setText(mensaje.getMensaje());
+        getVentana().getLabelLog().setForeground(mensaje.getColor());
+    }
+
+    public void realizaSimulacion() {
+        validaFormaCircuito();
     }
 
     public void repintarLienzo() {
-        iniciaLienzo();
+        lienzo = getVentana().getLienzo();
+        dobleBuffer = new BufferedImage(lienzo.getWidth(), lienzo.getHeight(), BufferedImage.TYPE_INT_ARGB);
         for (Entidad obj : guardaObjetos) {
-            fachada.dibujar(obj, getVentana().getLienzo().getGraphics());
+            fachada.dibujar(obj, dobleBuffer.getGraphics());
             System.out.println("posicion" + obj.getPosicionX() + "*****" + obj.getPosicionY());
         }
 
+        Graphics g = lienzo.getGraphics();
+        g.drawImage(dobleBuffer, 0, 0, lienzo);
     }
 
     public void deshacer() {
@@ -152,11 +193,18 @@ public class Modelo implements Runnable {
         while (pintaLienzo) {
             try {
                 repintarLienzo();
-                Thread.sleep(1000);
+                Thread.sleep(10000000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Modelo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public Logica getLogica() {
+        if (logica == null) {
+            logica = new Logica();
+        }
+        return logica;
     }
 
 }

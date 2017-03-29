@@ -19,16 +19,12 @@ public class Switch extends Entidad implements Acciones {
 
     @Override
     public void dibujar(Graphics g) {
-        if (getTipo().equalsIgnoreCase("ON")) {
-            getRelaciones().add(new Relaciones("salida", 1, ""));
-            getMensajeLog().setMensaje("Componente con salida 1");
-        } else {
-            getRelaciones().add(new Relaciones("salida", 0, ""));
-            getMensajeLog().setMensaje("Componente con salida 0");
+        if(getTipo().equalsIgnoreCase("on")){
+            setSalida(1);
+        }else{
+            setSalida(0);
         }
-
         g.drawImage(new javax.swing.ImageIcon(getClass().getResource("/recursos/lienzo/" + getTipo() + ".png")).getImage(), getPosicionX(), getPosicionY(), null);
-        getMensajeLog().setTipo("texto");
     }
 
     @Override

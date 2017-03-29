@@ -6,6 +6,7 @@
 package logica.entidad;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,6 +15,9 @@ import java.awt.Graphics;
 public class FachadaCompuertas {
 
     private Entidad objetosRepintar;
+    private ValidarTabla objetoTabla;
+    public static String text, nombreObjeto, nombreObjeto1, nombreObjeto2;
+    public static boolean estadoLineaUno;
 
     public void dibujar(Entidad e, Graphics g) {
         if (e instanceof Switch) {
@@ -27,22 +31,54 @@ public class FachadaCompuertas {
         } else if (e instanceof Linea) {
             Linea ln = (Linea) e;
             ln.dibujar(g);
-            objetosRepintar = ln;
+            objetosRepintar  = ln;
         } else if (e instanceof Salida) {
             Salida sal = (Salida) e;
             sal.dibujar(g);
             objetosRepintar = sal;
         }
     }
-    
 
-    //metodo que verifica que no se pueda 
-    public boolean validarPosicionComponente(Entidad e, int posicionX, int posicionY){
-        
-        return false;
+
+    public boolean validarPosicionComponente(ArrayList<Entidad> guardaObjetos, int posicionX, int posicionY, String tipo, int cantidad) {
+        objetoTabla = new ValidarTabla();
+        boolean validador = false;
+        if (guardaObjetos.isEmpty()) {
+            if ("linea".equals(tipo)) {
+                text = "Para iniciar por favor seleccionar un elemento diferente a la linea";
+                return false;
+            } else {
+                return true;
+            }
+        }
+        switch (tipo) {
+            case "and":
+                for (Entidad ent : guardaObjetos) {
+                    validador = objetoTabla.validarPosicionAnd(ent, posicionX, posicionY);
+                    if (!validador) {
+                        return false;
+                    }
+                }
+                break;
+            case "linea":
+                for (Entidad ent : guardaObjetos) {
+                    validador = objetoTabla.validarPosicionLinea(ent, posicionX, posicionY, cantidad);
+                    
+                    if (validador) {
+                        return true;
+                    }
+                }
+                break;
+  
+        }
+        return true;
+    }
+
+    public void validaExtremosLinea() {
+
     }
     
-    public void validaExtremosLinea(){
+    public void validarFuncionamientoCircuito(){
         
     }
 

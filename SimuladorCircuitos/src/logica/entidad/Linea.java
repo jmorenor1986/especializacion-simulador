@@ -15,6 +15,8 @@ import java.awt.Graphics;
 public class Linea extends Entidad implements Acciones {
 
     private int punto1X, punto1Y, punto2X, punto2Y;
+    private String nombreObjeto1;
+    private String nombreObjeto2;
 
     public Linea(String mensaje, String tipo) {
         super(mensaje, tipo);
@@ -63,7 +65,23 @@ public class Linea extends Entidad implements Acciones {
     public void setPunto2Y(int punto2Y) {
         this.punto2Y = punto2Y;
     }
+    public String getNombreObjeto1() {
+        return nombreObjeto1;
+    }
 
+    public void setNombreObjeto1(String nombreObjeto1) {
+        this.nombreObjeto1 = nombreObjeto1;
+    }
+
+    public String getNombreObjeto2() {
+        return nombreObjeto2;
+    }
+
+    public void setNombreObjeto2(String nombreObjeto2) {
+        this.nombreObjeto2 = nombreObjeto2;
+    }
+
+    
     @Override
     public void eliminar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

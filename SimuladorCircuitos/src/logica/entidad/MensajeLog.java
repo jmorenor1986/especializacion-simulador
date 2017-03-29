@@ -31,7 +31,7 @@ public class MensajeLog {
             color = new Color(253, 253, 0);
         } else if ("texto".equalsIgnoreCase(tipo)) {
             color = new Color(255, 255, 255);
-        } else if ("error".equalsIgnoreCase(tipo)) {
+            } else if ("error".equalsIgnoreCase(tipo)) {
             color = new Color(254, 45, 0);
         }else{
             color = new Color(255, 255, 255);

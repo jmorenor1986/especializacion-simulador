@@ -13,6 +13,8 @@ import java.awt.Graphics;
  */
 public class Salida extends Entidad implements Acciones {
 
+    
+   
     private Integer entrada;
     private String imagen;
 
