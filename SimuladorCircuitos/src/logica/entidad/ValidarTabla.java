@@ -52,6 +52,21 @@ public class ValidarTabla {
         }
     }
 
+    public boolean validarPosicionSwitch(Entidad ent, int posicionX, int posicionY) {
+        int emaxx = 0, eminx = 0, emaxy = 0, eminy = 0;
+        emaxx = ent.getPosicionX() + 100;
+        eminx = ent.getPosicionX() - 100;
+        emaxy = ent.getPosicionY() + 50;
+        eminy = ent.getPosicionY() - 50;
+
+        if ((posicionX >= eminx) && (posicionX <= emaxx) && (posicionY >= eminy) && (posicionY <= emaxy)) {
+            FachadaCompuertas.text = "No se debe colocar un elemento sobre otro";
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public boolean validarPosicionLinea(Entidad ent, int posicionX, int posicionY, int cantidad) {
         boolean validador = false;
         calcularPosiciones(ent.getPosicionX(), ent.getPosicionY());

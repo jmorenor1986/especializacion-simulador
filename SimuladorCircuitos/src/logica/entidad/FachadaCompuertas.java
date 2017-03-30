@@ -31,14 +31,13 @@ public class FachadaCompuertas {
         } else if (e instanceof Linea) {
             Linea ln = (Linea) e;
             ln.dibujar(g);
-            objetosRepintar  = ln;
+            objetosRepintar = ln;
         } else if (e instanceof Salida) {
             Salida sal = (Salida) e;
             sal.dibujar(g);
             objetosRepintar = sal;
         }
     }
-
 
     public boolean validarPosicionComponente(ArrayList<Entidad> guardaObjetos, int posicionX, int posicionY, String tipo, int cantidad) {
         objetoTabla = new ValidarTabla();
@@ -55,31 +54,51 @@ public class FachadaCompuertas {
             case "and":
                 for (Entidad ent : guardaObjetos) {
                     validador = objetoTabla.validarPosicionAnd(ent, posicionX, posicionY);
-                    if (!validador) {
-                        return false;
+                    if (validador) {
+                        return true;
                     }
                 }
                 break;
             case "linea":
                 for (Entidad ent : guardaObjetos) {
                     validador = objetoTabla.validarPosicionLinea(ent, posicionX, posicionY, cantidad);
-                    
+
                     if (validador) {
                         return true;
                     }
                 }
                 break;
-  
+            case "on":
+                for (Entidad ent : guardaObjetos) {
+                    validador = objetoTabla.validarPosicionSwitch(ent, posicionX, posicionY);
+
+                    if (validador) {
+                        return true;
+                    }
+                }
+
+                break;
+            case "off":
+                for (Entidad ent : guardaObjetos) {
+                    validador = objetoTabla.validarPosicionSwitch(ent, posicionX, posicionY);
+
+                    if (validador) {
+                        return true;
+                    }
+                }
+
+                break;
+
         }
-        return true;
+        return false;
     }
 
     public void validaExtremosLinea() {
 
     }
-    
-    public void validarFuncionamientoCircuito(){
-        
+
+    public void validarFuncionamientoCircuito() {
+
     }
 
     public Entidad getObjetosRepintar() {

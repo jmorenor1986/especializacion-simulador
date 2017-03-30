@@ -111,7 +111,11 @@ public class Logica {
             eliminaLinea(linea);
         }
     }
+    
+    
 
+    
+    
     public void eliminaLinea(Linea ln) {
         listaLineas.remove(ln);
     }
