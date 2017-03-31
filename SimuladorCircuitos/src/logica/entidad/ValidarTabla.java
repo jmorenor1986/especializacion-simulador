@@ -12,28 +12,38 @@ package logica.entidad;
 public class ValidarTabla {
     //validadores entrada 1 punto 1 linea
 
-    private int maxxentrada1 = 0, minxentrada1, maxyentrada1, minyentrada1;
+    private int maxxentrada, maxyentrada1, minyentrada1;
     //validadores entrada 2 punto 1 linea
-    private int maxxentrada2, minxentrada2, maxyentrada2, minyentrada2;
+    private int minxentrada, maxyentrada2, minyentrada2;
+    private int maxxentrada3, minxentrada3, maxyentrada3, minyentrada3;
     //validadores salida 1 punto 1 linea
     private int maxxsalida1, minxsalida1, maxysalida1, minysalida1;
+    private int maxxsalida2, minxsalida2, maxysalida2, minysalida2;
 
     public void calcularPosiciones(int actualx, int actualy) {
-        //validadores entrada 1 punto 1 linea
-        maxxentrada1 = actualx + 5;
-        minxentrada1 = actualx - 5;
+        //validadores entrada 1 punto 1 linea AND
+        maxxentrada = actualx + 5;
+        minxentrada = actualx - 5;
         maxyentrada1 = actualy + 10;
         minyentrada1 = actualy + 5;
-        //validadores entrada 2 punto 1 linea
-        maxxentrada2 = actualx + 5;
-        minxentrada2 = actualx - 5;
+        //validadores entrada 2 punto 1 linea AND
         maxyentrada2 = actualy + 37;
         minyentrada2 = actualy + 27;
-        //validadores salida 1 punto 1 linea
+        //validadores salida 1 punto 1 linea AND
         maxxsalida1 = actualx + 105;
         minxsalida1 = actualx + 95;
         maxysalida1 = actualy + 25;
         minysalida1 = actualy + 15;
+        //validadores salida 1 punto 1 linea SW
+        maxxsalida2 = actualx + 56;
+        minxsalida2 = actualx + 43;
+        maxysalida2 = actualy + 25;
+        minysalida2 = actualy + 15;
+        //validadores entrada 1 punto 1 linea LAMP
+        maxxentrada3 = actualx + 30;
+        minxentrada3 = actualx + 20;
+        maxyentrada3 = actualy + 48;
+        minyentrada3 = actualy + 38;
     }
 
     public boolean validarPosicionAnd(Entidad ent, int posicionX, int posicionY) {
@@ -70,19 +80,31 @@ public class ValidarTabla {
     public boolean validarPosicionLinea(Entidad ent, int posicionX, int posicionY, int cantidad) {
         boolean validador = false;
         calcularPosiciones(ent.getPosicionX(), ent.getPosicionY());
-        if ((posicionX >= minxentrada1) && (posicionX <= maxxentrada1) && (posicionY >= minyentrada1) && (posicionY <= maxyentrada1)) {
+        if ((posicionX >= minxentrada) && (posicionX <= maxxentrada) && (posicionY >= minyentrada1) && (posicionY <= maxyentrada1)) {
             validador = validarInput(ent.isIsInput1(), ent.isIsOutput1(), cantidad, ent.getNombre());
             if (!ent.isIsInput1()) {
                 ent.setIsInput1(validador);
             }
             return validador;
-        } else if ((posicionX >= minxentrada2) && (posicionX <= maxxentrada2) && (posicionY >= minyentrada2) && (posicionY <= maxyentrada2)) {
+        } else if ((posicionX >= minxentrada) && (posicionX <= maxxentrada) && (posicionY >= minyentrada2) && (posicionY <= maxyentrada2)) {
+            validador = validarInput(ent.isIsInput2(), ent.isIsOutput1(), cantidad, ent.getNombre());
+            if (!ent.isIsInput2()) {
+                ent.setIsInput2(validador);
+            }
+            return validador;
+        } else if ((posicionX >= minxentrada3) && (posicionX <= maxxentrada3) && (posicionY >= minyentrada3) && (posicionY <= maxyentrada3)) {
             validador = validarInput(ent.isIsInput2(), ent.isIsOutput1(), cantidad, ent.getNombre());
             if (!ent.isIsInput2()) {
                 ent.setIsInput2(validador);
             }
             return validador;
         } else if ((posicionX >= minxsalida1) && (posicionX <= maxxsalida1) && (posicionY >= minysalida1) && (posicionY <= maxysalida1)) {
+            validador = validarOutput(ent.isIsInput1(), ent.isIsInput2(), ent.isIsOutput1(), cantidad, ent.getNombre());
+            if (!ent.isIsOutput1()) {
+                ent.setIsOutput1(validador);
+            }
+            return validador;
+        } else if ((posicionX >= minxsalida2) && (posicionX <= maxxsalida2) && (posicionY >= minysalida2) && (posicionY <= maxysalida1)) {
             validador = validarOutput(ent.isIsInput1(), ent.isIsInput2(), ent.isIsOutput1(), cantidad, ent.getNombre());
             if (!ent.isIsOutput1()) {
                 ent.setIsOutput1(validador);

@@ -88,6 +88,16 @@ public class FachadaCompuertas {
                 }
 
                 break;
+            case "lampOFF":
+                for (Entidad ent : guardaObjetos) {
+                    validador = objetoTabla.validarPosicionSwitch(ent, posicionX, posicionY);
+
+                    if (validador) {
+                        return true;
+                    }
+                }
+
+                break;
 
         }
         return false;
