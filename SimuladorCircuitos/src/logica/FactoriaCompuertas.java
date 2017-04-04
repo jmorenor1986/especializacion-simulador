@@ -3,7 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logica.entidad;
+package logica;
+
+import logica.entidad.Compuerta;
+import logica.entidad.Entidad;
+import logica.entidad.Linea;
+import logica.entidad.Salida;
+import logica.entidad.Switch;
 
 /**
  *

@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logica.entidad;
+package logica;
+
+import logica.entidad.Entidad;
 
 /**
  *
  * @author Asesoftware
  */
-public class ValidarTabla {
+public class LogicaCanvas {
     //validadores entrada 1 punto 1 linea
 
-    private int maxxentrada, maxyentrada1, minyentrada1;
+    private int maxxentrada, maxyentrada1, minyentrada1, maxyentradaNot, minyentradaNot;
     //validadores entrada 2 punto 1 linea
     private int minxentrada, maxyentrada2, minyentrada2;
     private int maxxentrada3, minxentrada3, maxyentrada3, minyentrada3;
@@ -44,16 +46,20 @@ public class ValidarTabla {
         minxentrada3 = actualx + 20;
         maxyentrada3 = actualy + 48;
         minyentrada3 = actualy + 38;
+        //validadores entrada 1 punto 1 linea NOT
+        maxyentradaNot = actualy + 28;
+        minyentradaNot = actualy + 18;
+
     }
 
     public boolean validarPosicionAnd(Entidad ent, int posicionX, int posicionY) {
         int emaxx = 0, eminx = 0, emaxy = 0, eminy = 0;
-        if ("and".equals(ent.getTipo())) {
+    //    if ("and".equals(ent.getTipo())) {
             emaxx = ent.getPosicionX() + 100;
             eminx = ent.getPosicionX() - 100;
             emaxy = ent.getPosicionY() + 50;
             eminy = ent.getPosicionY() - 50;
-        }
+      //  }
         if ((posicionX >= eminx) && (posicionX <= emaxx) && (posicionY >= eminy) && (posicionY <= emaxy)) {
             FachadaCompuertas.text = "No se debe colocar un elemento sobre otro";
             return false;
@@ -104,10 +110,16 @@ public class ValidarTabla {
                 ent.setIsOutput1(validador);
             }
             return validador;
-        } else if ((posicionX >= minxsalida2) && (posicionX <= maxxsalida2) && (posicionY >= minysalida2) && (posicionY <= maxysalida1)) {
+        } else if ((posicionX >= minxsalida2) && (posicionX <= maxxsalida2) && (posicionY >= minysalida2) && (posicionY <= maxysalida2)) {
             validador = validarOutput(ent.isIsInput1(), ent.isIsInput2(), ent.isIsOutput1(), cantidad, ent.getNombre());
             if (!ent.isIsOutput1()) {
                 ent.setIsOutput1(validador);
+            }
+            return validador;
+        } else if ((posicionX >= minxentrada) && (posicionX <= maxxentrada) && (posicionY >= minyentradaNot) && (posicionY <= maxyentradaNot)) {
+            validador = validarInput(ent.isIsInput1(), ent.isIsOutput1(), cantidad, ent.getNombre());
+            if (!ent.isIsInput1()) {
+                ent.setIsInput1(validador);
             }
             return validador;
         } else {
@@ -124,7 +136,7 @@ public class ValidarTabla {
                 FachadaCompuertas.text = "Entrada OK";
                 FachadaCompuertas.estadoLineaUno = false;
                 FachadaCompuertas.nombreObjeto = nombreObjeto;
-                FachadaCompuertas.nombreObjeto1 = nombreObjeto;
+                FachadaCompuertas.nombreObjetoEntrada = nombreObjeto;
                 return true;
             } else {
                 if (FachadaCompuertas.nombreObjeto.equals(nombreObjeto)) {
@@ -132,7 +144,7 @@ public class ValidarTabla {
                     return false;
                 } else if (FachadaCompuertas.estadoLineaUno) {
                     FachadaCompuertas.text = "Conexión OK";
-                    FachadaCompuertas.nombreObjeto2 = nombreObjeto;
+                    FachadaCompuertas.nombreObjetoEntrada = nombreObjeto;
                     return true;
                 } else {
                     FachadaCompuertas.text = "No se puede conectar entrada con entrada";
@@ -150,7 +162,7 @@ public class ValidarTabla {
             if (cantidad == 0) {
                 FachadaCompuertas.text = "Salida OK";
                 FachadaCompuertas.nombreObjeto = nombreObjeto;
-                FachadaCompuertas.nombreObjeto1 = nombreObjeto;
+                FachadaCompuertas.nombreObjetoSalida = nombreObjeto;
                 FachadaCompuertas.estadoLineaUno = true;
                 return true;
             } else {
@@ -163,7 +175,7 @@ public class ValidarTabla {
                         return false;
                     } else {
                         FachadaCompuertas.text = "Conexión OK";
-                        FachadaCompuertas.nombreObjeto2 = nombreObjeto;
+                        FachadaCompuertas.nombreObjetoSalida = nombreObjeto;
                         return true;
                     }
                 }

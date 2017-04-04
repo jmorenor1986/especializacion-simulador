@@ -14,8 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.Logica;
 import logica.entidad.Entidad;
-import logica.entidad.FachadaCompuertas;
-import logica.entidad.FactoriaCompuertas;
+import logica.FachadaCompuertas;
+import logica.FactoriaCompuertas;
 import logica.entidad.Linea;
 import logica.entidad.MensajeLog;
 
@@ -38,6 +38,7 @@ public class Modelo implements Runnable {
     private int consecutivoNombre = 0;
     private BufferedImage dobleBuffer;
     private Canvas lienzo;
+    //private Logica logica;
     private Logica logica;
 
     public Modelo() {
@@ -56,6 +57,7 @@ public class Modelo implements Runnable {
     public void iniciar() {
         getVentana().setSize(1000, 600);
         getVentana().setVisible(true);
+        getVentana().setResizable(false);
         hiloDibujo.start();
         pintaLienzo = true;
         if (guardaObjetos == null) {
@@ -105,17 +107,21 @@ public class Modelo implements Runnable {
 
     }
 
+    public void dibujaBackground() {
+        getVentana().getLienzo().getGraphics().drawImage(new javax.swing.ImageIcon(getClass().getResource("/recursos/lienzo/cuaderno.jpg")).getImage(), 0, 0, null);
+    }
+
     public void dibujaLinea(int posicionX, int posicionY) {
         if (cantidad == 0) {
             objetoLinea = (Linea) FactoriaCompuertas.getEntidad(nombreObjeto);
             objetoLinea.setPunto1X(posicionX);
             objetoLinea.setPunto1Y(posicionY);
-            objetoLinea.setNombreObjeto1(FachadaCompuertas.nombreObjeto1);
         }
         if (cantidad == 1) {
             objetoLinea.setPunto2X(posicionX);
             objetoLinea.setPunto2Y(posicionY);
-            objetoLinea.setNombreObjeto2(FachadaCompuertas.nombreObjeto2);
+            objetoLinea.setNombreObjetoEntrada(FachadaCompuertas.nombreObjetoEntrada);
+            objetoLinea.setNombreObjetoSalida(FachadaCompuertas.nombreObjetoSalida);
             fachada.dibujar(objetoLinea, getVentana().getLienzo().getGraphics());
             fachada.getObjetosRepintar().setNombre("objeto" + consecutivoNombre);
             consecutivoNombre++;
@@ -136,38 +142,54 @@ public class Modelo implements Runnable {
             getVentana().getLabelLog().setForeground(Color.blue);
         } else {
             getVentana().getLabelLog().setForeground(Color.red);
-            if (FachadaCompuertas.text.contains("OK")) {
-                getVentana().getLabelLog().setText("Punto invalido");
+            try {
+                if (FachadaCompuertas.text.contains("OK")) {
+                    getVentana().getLabelLog().setText("Punto invalido");
+                }
+            } catch (Exception e) {
+                System.out.println("punto invalido");
             }
+
         }
         return validador;
     }
 
     public void validaFormaCircuito() {
-        getLogica().setListaEntidades(guardaObjetos);
-        getLogica().guardaComponentesSeparados();
-        if (getLogica().getListaSwitch().isEmpty()) {
+        getLogica().setObjetosEntidad(guardaObjetos);
+        getLogica().guardaObjetos();
+        if (getLogica().getObjetoSwitch().isEmpty()) {
             mensaje.setMensaje("En el circuito no existe por lo menos un switch");
             mensaje.setTipo("error");
-        } else if (getLogica().getListaSalida().isEmpty()) {
-            mensaje.setMensaje("En el circuito no existe por lo menos una salida");
-            mensaje.setTipo("error");
-        } else if (getLogica().getListaCompuertas().isEmpty()) {
-            mensaje.setMensaje("En el circuito no existe por lo menos una compuerta");
-            mensaje.setTipo("error");
-        } else if (getLogica().getListaLineas().isEmpty()) {
+
+        } else if (getLogica().getObjetoLinea().isEmpty()) {
             mensaje.setMensaje("En el circuito no existe por lo menos una conexión");
             mensaje.setTipo("error");
-        }else{
-            getLogica().verificaEntradas();
+        } else {
+            Entidad ent = getLogica().verificaEstructuraCircuito();
+            if (ent == null) {
+                getLogica().iniciaVerificacion();
+                if (getLogica().getMensajeLog().getMensaje().startsWith("OK")) {
+                    mensaje = getLogica().getMensajeLog();
+                }
+            } else {
+                mensaje.setMensaje("Circuito mal formado revise conexión de una entidad de tipo " + ent.getTipo());
+                mensaje.setTipo("error");
+            }
+
         }
 
         getVentana().getLabelLog().setText(mensaje.getMensaje());
         getVentana().getLabelLog().setForeground(mensaje.getColor());
+        guardaObjetos = getLogica().getObjetosEntidad();
     }
 
     public void realizaSimulacion() {
         validaFormaCircuito();
+    }
+
+    public void nuevoLienzo() {
+        lienzo.repaint();
+        guardaObjetos=new ArrayList<>();
     }
 
     public void repintarLienzo() {
@@ -183,9 +205,11 @@ public class Modelo implements Runnable {
     }
 
     public void deshacer() {
+        lienzo.repaint();
         if (guardaObjetos != null && guardaObjetos.size() > 0) {
             guardaObjetos.remove(guardaObjetos.size() - 1);
         }
+
     }
 
     @Override
@@ -193,7 +217,7 @@ public class Modelo implements Runnable {
         while (pintaLienzo) {
             try {
                 repintarLienzo();
-                Thread.sleep(10000000);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Modelo.class.getName()).log(Level.SEVERE, null, ex);
             }

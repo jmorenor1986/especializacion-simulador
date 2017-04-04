@@ -13,8 +13,6 @@ import java.awt.Graphics;
  */
 public class Salida extends Entidad implements Acciones {
 
-    
-   
     private Integer entrada;
     private String imagen;
 
@@ -51,10 +49,16 @@ public class Salida extends Entidad implements Acciones {
 
     @Override
     public void eliminar() {
+
     }
 
     @Override
     public void validarEstado() {
+        if (getEntrada() == 0) {
+            imagen = "/recursos/lienzo/lampOFF.png";
+        } else {
+            imagen = "/recursos/lienzo/lampON.png";
+        }
     }
 
     public Integer getEntrada() {

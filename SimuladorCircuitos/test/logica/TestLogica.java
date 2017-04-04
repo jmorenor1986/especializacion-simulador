@@ -17,19 +17,19 @@ import static org.junit.Assert.*;
  */
 public class TestLogica {
     
-    private TempLogica logica;
+    private Logica logica;
     private ArrayList<Entidad> lista;
     
     @Before
     public void instanciaLogica(){
-        logica = new TempLogica();
+        logica = new Logica();
         lista = new ArrayList<>();
     }
     @Test
     public void verificaAlmacenamientoLinea(){
-        logica.guardaLineas();
-        String resultado = logica.getMensaje();
-        if(resultado.equalsIgnoreCase("OK")){
+        logica.guardaObjetos();
+        String resultado = logica.getMensajeLog().getMensaje();
+        if(resultado.startsWith("OK")){
             System.out.println("bien");
         }
         else{

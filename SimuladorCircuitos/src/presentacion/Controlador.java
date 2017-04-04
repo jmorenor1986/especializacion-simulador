@@ -22,6 +22,7 @@ public class Controlador implements MouseListener, ActionListener {
 
     public Controlador(Vista aThis) {
         ventana = aThis;
+        //ventana.getModelo().dibujaBackground();
     }
 
     @Override
@@ -62,6 +63,10 @@ public class Controlador implements MouseListener, ActionListener {
             }
             if ("deshacer".equalsIgnoreCase(item.getText())) {
                 ventana.getModelo().deshacer();
+            }
+
+            if ("nuevo".equalsIgnoreCase(item.getText())) {
+                ventana.getModelo().nuevoLienzo();
             }
         }
 

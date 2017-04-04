@@ -3,10 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logica.entidad;
+package logica;
 
+import logica.LogicaCanvas;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import logica.entidad.Compuerta;
+import logica.entidad.Entidad;
+import logica.entidad.Linea;
+import logica.entidad.Salida;
+import logica.entidad.Switch;
 
 /**
  *
@@ -15,8 +21,8 @@ import java.util.ArrayList;
 public class FachadaCompuertas {
 
     private Entidad objetosRepintar;
-    private ValidarTabla objetoTabla;
-    public static String text, nombreObjeto, nombreObjeto1, nombreObjeto2;
+    private LogicaCanvas objetoTabla;
+    public static String text, nombreObjeto, nombreObjetoEntrada, nombreObjetoSalida;
     public static boolean estadoLineaUno;
 
     public void dibujar(Entidad e, Graphics g) {
@@ -38,9 +44,11 @@ public class FachadaCompuertas {
             objetosRepintar = sal;
         }
     }
+    
+    
 
     public boolean validarPosicionComponente(ArrayList<Entidad> guardaObjetos, int posicionX, int posicionY, String tipo, int cantidad) {
-        objetoTabla = new ValidarTabla();
+            objetoTabla = new LogicaCanvas();
         boolean validador = false;
         if (guardaObjetos.isEmpty()) {
             if ("linea".equals(tipo)) {
@@ -54,8 +62,8 @@ public class FachadaCompuertas {
             case "and":
                 for (Entidad ent : guardaObjetos) {
                     validador = objetoTabla.validarPosicionAnd(ent, posicionX, posicionY);
-                    if (validador) {
-                        return true;
+                    if (!validador) {
+                        return validador;
                     }
                 }
                 break;
@@ -72,8 +80,8 @@ public class FachadaCompuertas {
                 for (Entidad ent : guardaObjetos) {
                     validador = objetoTabla.validarPosicionSwitch(ent, posicionX, posicionY);
 
-                    if (validador) {
-                        return true;
+                    if (!validador) {
+                        return validador;
                     }
                 }
 
@@ -82,8 +90,8 @@ public class FachadaCompuertas {
                 for (Entidad ent : guardaObjetos) {
                     validador = objetoTabla.validarPosicionSwitch(ent, posicionX, posicionY);
 
-                    if (validador) {
-                        return true;
+                    if (!validador) {
+                        return validador;
                     }
                 }
 
@@ -92,15 +100,39 @@ public class FachadaCompuertas {
                 for (Entidad ent : guardaObjetos) {
                     validador = objetoTabla.validarPosicionSwitch(ent, posicionX, posicionY);
 
-                    if (validador) {
-                        return true;
+                    if (!validador) {
+                        return validador;
                     }
                 }
 
                 break;
+            case "or":
+                for (Entidad ent : guardaObjetos) {
+                    validador = objetoTabla.validarPosicionAnd(ent, posicionX, posicionY);
+                    if (!validador) {
+                        return validador;
+                    }
+                }
+                break;
+            case "not":
+                for (Entidad ent : guardaObjetos) {
+                    validador = objetoTabla.validarPosicionAnd(ent, posicionX, posicionY);
+                    if (!validador) {
+                        return validador;
+                    }
+                }
+                break;
+            case "xor":
+                for (Entidad ent : guardaObjetos) {
+                    validador = objetoTabla.validarPosicionAnd(ent, posicionX, posicionY);
+                    if (!validador) {
+                        return validador;
+                    }
+                }
+                break;
 
         }
-        return false;
+        return validador;
     }
 
     public void validaExtremosLinea() {

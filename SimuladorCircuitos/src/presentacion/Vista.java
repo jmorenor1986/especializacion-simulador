@@ -151,6 +151,7 @@ public class Vista extends javax.swing.JFrame {
     private void asignarEventosCanvas() {
         lienzo.addMouseListener(getControl());
         nuevoLienzo.addMouseListener(getControl());
+        
     }
 
     public Controlador getControl() {
